@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI는 왜 편견을 가질까? - 인터랙티브 워크북</title>
+    <style>
+        /* Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-gray: #f9fafb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .section-number {
+            background-color: #2563eb;
+            color: var(--white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+
+        /* Buttons */
+        .btn-infographic {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--white);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 24px;
+            margin-left: auto;
+        }
+
+        .btn-infographic:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Cards & Boxes */
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .quote-box {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #60a5fa;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+            .btn-infographic { margin: 0 auto 24px; }
+        }
+
+        .comparison-card h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .comparison-list li::before {
+            content: "●";
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+
+        /* Dark Theme Section */
+        .dark-section {
+            background-color: #111827;
+            color: var(--white);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        .dark-section h2 { margin-bottom: 8px; }
+        .dark-section p.subtitle { color: #9ca3af; font-size: 0.85rem; margin-bottom: 40px; }
+
+        .path-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .path-item h3 { margin-bottom: 8px; }
+        .path-item p { font-size: 0.85rem; color: #d1d5db; }
+
+        /* Interaction Section */
+        .dilemma-box {
+            text-align: center;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .btn-choice {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-choice.blue { background-color: #dbeafe; color: #1d4ed8; }
+        .btn-choice.red { background-color: #fee2e2; color: #b91c1c; }
+        .btn-choice.gray { background-color: #f3f4f6; color: #374151; }
+        .btn-choice:hover { opacity: 0.8; }
+
+        #dilemma-result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            width: 100%;
+            text-align: left;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .quiz-option:hover { background-color: #f9fafb; }
+        .quiz-option:disabled { cursor: default; }
+
+        #quiz-feedback {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .feedback-correct { background-color: #dcfce7; color: #15803d; }
+        .feedback-wrong { background-color: #fee2e2; color: #b91c1c; }
+
+        .btn-next {
+            background-color: #2563eb;
+            color: var(--white);
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 4px solid rgba(255,255,255,0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
+
+        footer {
+            background-color: #f3f4f6;
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for Infographic -->
+    <div id="imageModal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content animate-fade" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times; 닫기</button>
+            <img src="04.png" alt="인포그래픽 이미지" id="modalImage" class="modal-image" onerror="this.src='https://placehold.co/1200x800?text=04.png+Not+Found'">
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="../index.html" class="home-btn">
+            <svg style="width:16px;height:16px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            홈
+        </a>
+        <h1>인공지능은 왜 '편견'을 가질까?</h1>
+        <p>인간의 습관으로 이해하는 AI 편향성 탐구</p>
+    </header>
+
+    <main class="container">
+        
+        <!-- Section 1: 생각 열기 -->
+        <section>
+            <button onclick="openModal()" class="btn-infographic">
+                <span>📊</span> 핵심 인포그래픽 보기
+            </button>
+
+            <div class="section-title">
+                <div class="section-number">1</div>
+                <h2>인공지능은 정말 '중립적'일까?</h2>
+            </div>
+
+            <div class="card">
+                <p>우리는 AI가 기계이기 때문에 객관적일 것이라고 생각하지만, 사실 AI는 <strong>인간이 만든 데이터</strong>를 먹고 자랍니다.</p>
+                <div class="quote-box">
+                    "AI의 편향성은 우리가 무의식중에 반복하는 '습관'과 닮아 있습니다."
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: 비교 -->
+        <section>
+            <div class="section-title">
+                <div class="section-number">2</div>
+                <h2>무엇이 다를까? (비교 분석)</h2>
+            </div>
+            <div class="grid">
+                <div class="card comparison-card">
+                    <h3 style="color: #2563eb;">👤 인간의 편향</h3>
+                    <ul class="comparison-list">
+                        <li>경험, 문화, 교육을 통한 학습</li>
+                        <li>시간이 지나면 변화 가능</li>
+                        <li>개인의 행동에 영향</li>
+                    </ul>
+                </div>
+                <div class="card comparison-card">
+                    <h3 style="color: #9333ea;">🤖 인공지능의 편향</h3>
+                    <ul class="comparison-list">
+                        <li>데이터와 알고리즘에 고착된 패턴</li>
+                        <li>수정 전까지 동일 패턴 유지</li>
+                        <li>시스템 전체에 광범위한 영향</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 경로 -->
+        <section class="dark-section">
+            <h2>편향을 만드는 두 가지 경로</h2>
+            <p class="subtitle">재료가 문제일까? 요리법이 문제일까?</p>
+            <div class="path-grid">
+                <div class="path-item">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🥩</div>
+                    <h3 style="color: #f87171;">데이터 편향</h3>
+                    <p>"과거의 거울"<br>학습 데이터 자체가 불균형할 때 발생</p>
+                </div>
+                <div class="path-item" style="border-left: 1px solid #374151; padding-left: 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🍳</div>
+                    <h3 style="color: #fbbf24;">알고리즘 편향</h3>
+                    <p>"치우친 요리법"<br>설계 단계에서 특정 속성에 가중치를 둠</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: 딜레마 -->
+        <section>
+            <div class="section-title">
+                <div class="section-number">3</div>
+                <h2>윤리적 딜레마 체험</h2>
+            </div>
+            <div class="card dilemma-box">
+                <p style="font-weight: 500;">사고를 피할 수 없을 때, 자율주행 AI는 누구를 보호해야 할까요?</p>
+                <div class="btn-group">
+                    <button onclick="showDilemma('A')" class="btn-choice blue">어린이 보호 우선</button>
+                    <button onclick="showDilemma('B')" class="btn-choice red">모든 생명 동등(무작위)</button>
+                    <button onclick="showDilemma('C')" class="btn-choice gray">운전자 보호 우선</button>
+                </div>
+                <div id="dilemma-result" class="animate-fade"></div>
+            </div>
+        </section>
+
+        <!-- Section 5: 퀴즈 -->
+        <section>
+            <div class="section-title">
+                <div class="section-number">4</div>
+                <h2>학습 확인 퀴즈</h2>
+            </div>
+            <div id="quiz-card" class="card">
+                <div id="quiz-question" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;"></div>
+                <div id="quiz-options"></div>
+                <div id="quiz-feedback"></div>
+                <button id="next-quiz" class="btn-next">다음 문제</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>인공지능은 인간의 모습을 비추는 거울입니다.</p>
+        <p style="margin-top: 8px;">© 2024 AI Ethics Education Program</p>
+    </footer>
+
+    <script>
+        /* Vanilla JavaScript Logic */
+
+        // Modal Logic
+        const modal = document.getElementById('imageModal');
+        function openModal() {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+
+        // Dilemma Logic
+        function showDilemma(type) {
+            const resultBox = document.getElementById('dilemma-result');
+            resultBox.style.display = 'block';
+            let msg = "";
+            if(type === 'A') msg = "<strong>[나이 기준]</strong> MIT 설문조사에 따르면 '어린이'는 구조 우선순위에서 상위권에 속했습니다. 하지만 '생명의 가치를 나이로 매길 수 있는가?'라는 윤리적 질문이 남습니다.";
+            else if(type === 'B') msg = "<strong>[무작위 선택]</strong> 모든 생명을 동등하게 보고 운명에 맡기는 방식입니다. 공정해 보일 수 있지만 피해 최소화 원칙과 충돌할 수 있습니다.";
+            else msg = "<strong>[운전자 보호]</strong> 자동차 구매자를 보호하는 설계입니다. 하지만 보행자에게 일방적인 희생을 강요한다는 사회적 비판을 피하기 어렵습니다.";
+            resultBox.innerHTML = msg;
+        }
+
+        // Quiz Logic
+        const quizData = [
+            { q: "인공지능의 편향성이 발생하는 근본적인 이유는?", a: ["기계의 고장", "인간의 데이터와 알고리즘 학습", "컴퓨터 속도 부족"], c: 1 },
+            { q: "과거의 사회적 불평등이 담긴 정보를 학습해 발생하는 편향은?", a: ["알고리즘 편향", "데이터 편향", "시스템 편향"], c: 1 },
+            { q: "MIT 연구 결과, 구조 우선순위 리스트 1위는?", a: ["어린 소년", "유모차를 끄는 사람", "젊은 의사"], c: 1 }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        const qText = document.getElementById('quiz-question');
+        const qOptions = document.getElementById('quiz-options');
+        const qFeedback = document.getElementById('quiz-feedback');
+        const qNextBtn = document.getElementById('next-quiz');
+
+        function renderQuiz() {
+            const data = quizData[currentQ];
+            qText.innerText = `Q${currentQ + 1}. ${data.q}`;
+            qOptions.innerHTML = '';
+            qFeedback.style.display = 'none';
+            qNextBtn.style.display = 'none';
+
+            data.a.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.innerText = text;
+                btn.onclick = () => selectAnswer(i);
+                qOptions.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(idx) {
+            const data = quizData[currentQ];
+            const btns = qOptions.querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
+
+            qFeedback.style.display = 'block';
+            if(idx === data.c) {
+                qFeedback.innerText = "정답입니다! 🎉";
+                qFeedback.className = "feedback-correct";
+                score++;
+            } else {
+                qFeedback.innerText = "아쉬워요! 정답은 '" + data.a[data.c] + "' 입니다.";
+                qFeedback.className = "feedback-wrong";
+            }
+            qNextBtn.style.display = 'block';
+        }
+
+        qNextBtn.onclick = () => {
+            currentQ++;
+            if(currentQ < quizData.length) {
+                renderQuiz();
+            } else {
+                document.getElementById('quiz-card').innerHTML = `
+                    <div style="text-align:center; padding: 20px;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 10px;">학습 완료!</h3>
+                        <p style="margin-bottom: 20px;">총 ${quizData.length}문제 중 ${score}문제를 맞혔습니다.</p>
+                        <button onclick="location.reload()" style="background:#2563eb; color:white; border:none; padding:12px 24px; border-radius:30px; cursor:pointer; font-weight:700;">다시 시작하기</button>
+                    </div>
+                `;
+            }
+        };
+
+        // Init
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
